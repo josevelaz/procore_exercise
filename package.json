@@ -1,0 +1,35 @@
+{
+  "name": "procore_exercise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/josevelaz/procore_exercise.git"
+  },
+  "author": "Jose Velazquez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josevelaz/procore_exercise/issues"
+  },
+  "homepage": "https://github.com/josevelaz/procore_exercise#readme",
+  "dependencies": {
+    "@overnightjs/core": "^1.7.5",
+    "@overnightjs/logger": "^1.2.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.31",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.21.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
