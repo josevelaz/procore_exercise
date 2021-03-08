@@ -15,10 +15,16 @@ async function retrieveProjectID(companyId: number) {
 
     try {
         let res = await fetch(
-            `${process.env.PROCORE_URI}/rest/v1.0/projects?company_id=${companyId}`
+            `${process.env.PROCORE_URI}/rest/v1.0/projects?company_id=${companyId}`,
+            {
+                headers: {
+                    Authorization: `${process.env.ACCESS_TOKEN}`,
+                },
+            }
         );
         let json = await res.json();
         process.env.PROJECT_ID = json[0].id;
+        Logger.Info("Successfully fetched project data. Initiating Server... ");
     } catch (error) {
         Logger.Err(error);
     }
@@ -38,13 +44,10 @@ async function retrieveComanyInfo() {
             }
         );
         let json = await res.json();
-        Logger.Info(
-            "Successfully fetched company information. Ready to spin up the service."
-        );
+        Logger.Info("Successfully fetched company information. ");
         const id = json[0].id;
-        process.env.COMPANY_ID = id;
         retrieveProjectID(id);
-        server.start(8000);
+        server.start(process.env.PORT);
     } catch (error) {
         Logger.Err(error);
     }

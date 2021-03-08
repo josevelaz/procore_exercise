@@ -24,7 +24,7 @@ class ServerRouter extends Server {
         }
         super.addControllers(controllerInstances);
     }
-    public start(port?: number): void {
+    public start(port?: string | number): void {
         port = port || 8000;
         this.app.get("*", (req: Request, res: Response) => {
             res.send(this.WELCOME_MESSAGE);

@@ -8,7 +8,7 @@ import fetch from "node-fetch";
 export class SubmittalsController {
     @Post()
     private async add(req: Request, res: Response) {
-        const parsedData = {
+        const data = {
             title: req.body.name,
             number: req.body.number,
             description: req.body.description,
@@ -16,20 +16,41 @@ export class SubmittalsController {
         };
 
         try {
-            const api_res = fetch(
+            const api_res = await fetch(
                 `${process.env.PROCORE_URI}/rest/v1.0/projects/${process.env.PROJECT_ID}/submittals`,
                 {
                     method: "POST",
                     headers: {
                         Authorization: `${process.env.ACCESS_TOKEN}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ submittal: data }),
+                }
+            );
+            const json = await api_res.json();
+            return res.status(StatusCodes.OK).json(json);
+        } catch (error) {
+            return res.status(StatusCodes.BAD_REQUEST);
+        }
+    }
+
+    @Get("")
+    private async retrieve(req: Request, res: Response) {
+        try {
+            const api_res = await fetch(
+                `${process.env.PROCORE_URI}/rest/v1.0/projects/${process.env.PROJECT_ID}/submittals`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `${process.env.ACCESS_TOKEN}`,
                     },
                 }
             );
-            Logger.Info(api_res, true);
-            return res.status(StatusCodes.OK).json(parsedData);
+
+            let json = await api_res.json();
+            return res.status(StatusCodes.OK).json(json);
         } catch (error) {
-            Logger.Err(error, true);
-            return res.status(StatusCodes.BAD_REQUEST);
+            return res.status(StatusCodes.BAD_REQUEST).json(error);
         }
     }
 }
