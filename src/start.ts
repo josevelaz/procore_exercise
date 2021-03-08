@@ -1,5 +1,3 @@
-import * as paht from "path";
-import * as fs from "fs";
 import fetch from "node-fetch";
 import ServerRouter from "./ServerRouter";
 import { Logger } from "@overnightjs/logger";
@@ -26,7 +24,9 @@ async function retrieveProjectID(companyId: number) {
         process.env.PROJECT_ID = json[0].id;
         Logger.Info("Successfully fetched project data. Initiating Server... ");
     } catch (error) {
-        Logger.Err(error);
+        throw new Error(
+            "There has been an error fetching the project information. Please Try Again."
+        );
     }
 }
 
@@ -49,7 +49,9 @@ async function retrieveComanyInfo() {
         retrieveProjectID(id);
         server.start(process.env.PORT);
     } catch (error) {
-        Logger.Err(error);
+        throw new Error(
+            "There has been an error fetching the company information. Please Try Again."
+        );
     }
 }
 
@@ -67,5 +69,8 @@ async function retrieveComanyInfo() {
         retrieveComanyInfo();
     } catch (error) {
         Logger.Err(error);
+        throw new Error(
+            "There has been an error fetching a new access token. Please Try Again."
+        );
     }
 })();
