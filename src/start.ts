@@ -10,6 +10,20 @@ process.env.PROCORE_URI = "https://sandbox.procore.com";
 
 let server = new ServerRouter();
 
+async function retrieveProjectID(companyId: number) {
+    Logger.Info("Retrieving Project Data...");
+
+    try {
+        let res = await fetch(
+            `${process.env.PROCORE_URI}/rest/v1.0/projects?company_id=${companyId}`
+        );
+        let json = await res.json();
+        process.env.PROJECT_ID = json[0].id;
+    } catch (error) {
+        Logger.Err(error);
+    }
+}
+
 async function retrieveComanyInfo() {
     Logger.Info("Retrieving Company Data...");
 
@@ -27,7 +41,9 @@ async function retrieveComanyInfo() {
         Logger.Info(
             "Successfully fetched company information. Ready to spin up the service."
         );
-        process.env.COMPANY_ID = json[0].id;
+        const id = json[0].id;
+        process.env.COMPANY_ID = id;
+        retrieveProjectID(id);
         server.start(8000);
     } catch (error) {
         Logger.Err(error);
